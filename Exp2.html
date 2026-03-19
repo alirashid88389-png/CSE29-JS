@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f4f4f9; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        button { padding: 10px 15px; cursor: pointer; border: none; border-radius: 4px; background: #007bff; color: white; }
+        button:hover { background: #0056b3; }
+        #output { border-top: 2px solid #eee; padding-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Employee Records</h2>
+    
+    <!-- Input Section -->
+    <div class="input-group">
+        <input type="text" id="empName" placeholder="Employee Name">
+        <input type="text" id="empID" placeholder="Employee ID">
+        <input type="number" id="empSalary" placeholder="Salary (₹)">
+        <select id="empDept">
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Sales">Sales</option>
+            <option value="Finance">Finance</option>
+        </select>
+    </div>
+    <button onclick="addEmployee()" style="background: #28a745; width: 100%; margin-bottom: 20px;">Add Employee</button>
+
+    <!-- Operation Buttons -->
+    <div class="buttons">
+        <button onclick="displayEmployees(employees)">Show All</button>
+        <button onclick="filterHighSalary()">Salary > ₹50,000</button>
+        <button onclick="calculateTotal()">Total Payout</button>
+        <button onclick="calculateAverage()">Average Salary</button>
+        <button onclick="countByDept()">Count by Dept</button>
+    </div>
+
+    <!-- Output Display -->
+    <div id="output"></div>
+</div>
+
+<script>
+    let employees = [];
+
+    function addEmployee() {
+        const name = document.getElementById('empName').value;
+        const id = document.getElementById('empID').value;
+        const salary = parseFloat(document.getElementById('empSalary').value);
+        const dept = document.getElementById('empDept').value;
+
+        if (name && id && salary) {
+            // Task: Store as object inside array
+            employees.push({ name, id, salary, dept });
+            alert("Employee added successfully!");
+            clearInputs();
+        } else {
+            alert("Please fill all fields");
+        }
+    }
+
+    function clearInputs() {
+        document.getElementById('empName').value = '';
+        document.getElementById('empID').value = '';
+        document.getElementById('empSalary').value = '';
+    }
+
+    function displayEmployees(data) {
+        let html = `<h3>Employee List (${data.length})</h3><table><tr><th>ID</th><th>Name</th><th>Dept</th><th>Salary</th></tr>`;
+        
+        // Task: Use for...of or forEach to display
+        for (let emp of data) {
+            html += `<tr><td>${emp.id}</td><td>${emp.name}</td><td>${emp.dept}</td><td>₹${emp.salary}</td></tr>`;
+        }
+        html += `</table>`;
+        document.getElementById('output').innerHTML = html;
+    }
+
+    function filterHighSalary() {
+        // Task: Use filter method
+        const highEarners = employees.filter(emp => emp.salary > 50000);
+        displayEmployees(highEarners);
+    }
+
+    function calculateTotal() {
+        // Task: Use reduce to calculate sum
+        const total = employees.reduce((sum, emp) => sum + emp.salary, 0);
+        document.getElementById('output').innerHTML = `<h3>Total Salary Payout: ₹${total.toLocaleString()}</h3>`;
+    }
+
+    function calculateAverage() {
+        if (employees.length === 0) return;
+        const total = employees.reduce((sum, emp) => sum + emp.salary, 0);
+        const avg = total / employees.length;
+        document.getElementById('output').innerHTML = `<h3>Average Salary: ₹${avg.toFixed(2)}</h3>`;
+    }
+
+    function countByDept()   {
+        const counts = {};
+        // Task: Use for...in or forEach to count
+        employees.forEach(emp => {
+            counts[emp.dept] = (counts[emp.dept] || 0) + 1;
+        });
+
+        let result = "<h3>Department-wise Count</h3><ul>";
+        for (let dept in counts) {
+            result += `<li><strong>${dept}:</strong> ${counts[dept]} employees</li>`;
+        }
+        result += "</ul>";
+        document.getElementById('output').innerHTML = result;
+    }
+</script>
+
+</body>
+</html>
