@@ -1,12 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Experiment 1</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #e7e1e1;
+        }
+        .box {
+            margin-top: 50px;
+            padding: 20px;
+            background: white;
+            display: inline-block;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
+
+<div class="box">
+    <h2>Marks Calculator</h2>
     
-     <script src="./script.js"></script>
+    Enter number of subjects:
+    <input type="number" id="num"><br><br>
+    
+    <button onclick="calculate()">Calculate Result</button>
+    
+    <h3 id="result"></h3>
+</div>
+
+<script>
+function calculate() {
+    let n = document.getElementById("num").value;
+    let total = 0;
+
+    for (let i = 1; i <= n; i++) {
+        let marks = parseFloat(prompt("Enter marks of subject " + i));
+        total += marks;
+    }
+
+    let avg = total / n;
+    let grade;
+
+    if (avg >= 80) {
+        grade = "A";
+    } else if (avg >= 60) {
+        grade = "B";
+    } else if (avg >= 40) {
+        grade = "C";
+    } else {
+        grade = "Fail";
+    }
+
+    document.getElementById("result").innerHTML =
+        "Total = " + total + "<br>Average = " + avg + "<br>Grade = " + grade;
+}
+</script>
+
 </body>
 </html>
